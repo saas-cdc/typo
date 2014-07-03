@@ -85,6 +85,7 @@ class Article < Content
     self.comments = self.comments + merge_article.comments
     merge_article.comments.each{|comment| comment.article = self; comment.save}
     self.save
+    Article.find(merge_article.id).destroy
   end
 
   attr_accessor :draft, :keywords
