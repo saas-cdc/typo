@@ -80,6 +80,13 @@ class Article < Content
     Article.exists?({:parent_id => self.id})
   end
 
+  def merge(merge_article)
+    self.body = self.body + " " + merge_article.body
+    self.comments = self.comments + merge_article.comments
+    merge_article.comments.each{|comment| comment.article = self; comment.save}
+    self.save
+  end
+
   attr_accessor :draft, :keywords
 
   has_state(:state,

@@ -27,6 +27,16 @@ class Admin::ContentController < Admin::BaseController
     new_or_edit
   end
 
+  def merge
+    @article = Article.find(params[:id])
+    merge_article = Article.find(params[:merge][:with])
+    if @article.id == merge_article.id
+      raise "Articles have the same id #{@article.id} and #{@merge_article.id}; #{Article.all}"
+    end
+    @article.merge(merge_article)
+    new_or_edit
+  end
+
   def edit
     @article = Article.find(params[:id])
     unless @article.access_by? current_user
@@ -147,7 +157,7 @@ class Admin::ContentController < Admin::BaseController
 
     @post_types = PostType.find(:all)
     if request.post?
-      if params[:article][:draft]
+      if params[:article] && params[:article][:draft]
         get_fresh_or_existing_draft_for_article
       else
         if not @article.parent_id.nil?
@@ -189,6 +199,8 @@ class Admin::ContentController < Admin::BaseController
       flash[:notice] = _('Article was successfully created')
     when 'edit'
       flash[:notice] = _('Article was successfully updated.')
+    when 'merge'
+      flash[:notice] = _('Article was successfully merged.')
     else
       raise "I don't know how to tidy up action: #{params[:action]}"
     end
