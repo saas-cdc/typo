@@ -9,8 +9,10 @@
       <input class="large" id="merge_with" name="merge_with" size="30" type="text">
     </div>
   </div>
-  Merge Articles:
-  <div class='actions'>
-    <%= submit_tag("Merge") %>  
-  </div>
+  <% if @user.admin? %>
+	  Merge Articles:
+	  <div class='actions'>
+	    <%= submit_tag("Merge") %>  
+	  </div>
+  <% end %>
  <% end %>

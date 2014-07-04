@@ -29,6 +29,11 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     @article = Article.find(params[:id])
+    unless current_user.admin?
+      redirect_to :action => 'index'
+      flash[:error] = _("Error, you are not allowed to perform this action")
+      return
+    end
     merge_article = Article.find(params[:merge_with])
     if @article.id == merge_article.id
       raise "Articles have the same id #{@article.id} and #{@merge_article.id}; #{Article.all}"
@@ -152,6 +157,8 @@ class Admin::ContentController < Admin::BaseController
   def new_or_edit
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
+
+    @user = current_user
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
 
