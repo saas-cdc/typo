@@ -29,7 +29,7 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     @article = Article.find(params[:id])
-    merge_article = Article.find(params[:merge][:with])
+    merge_article = Article.find(params[:merge_with])
     if @article.id == merge_article.id
       raise "Articles have the same id #{@article.id} and #{@merge_article.id}; #{Article.all}"
     end
