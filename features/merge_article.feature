@@ -23,7 +23,7 @@ Feature: Merge Articles
     Given I am on the article page for "Foobar"
     Then I should see "Article ID"
 
-  Scenario: Successfully merge articles
+  Scenario: Merge articles
     And I am logged into the admin panel
     Given I am on the article page for "Foobar"
     And I fill in "merge_with" with the article id for "Rainbows"
